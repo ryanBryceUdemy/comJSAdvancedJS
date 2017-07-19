@@ -175,7 +175,7 @@ console.log(age);
 console.log(obj);
 */
 
-
+/*
 ////////
 //passing functions as arguments (Callbacks)
 
@@ -216,3 +216,39 @@ var fullages = arrayCalc(ages, isFullAge);
 console.log(fullages);
 var rates = arrayCalc( ages, maxHeartRate);
 console.log(rates);
+*/
+
+//////////////////////
+//returning functions returning functions
+
+//we make a function that checks for the tyoe of job being passed into it from param,
+//we then return an anonymous function with the correct response
+function interviewQuestions(job) {
+  if (job === 'designer') {
+    return function (name) {
+      console.log(name + ' can you please explain what UX design is? ');
+    };
+  }else if (job === 'teacher') {
+    return function (name) {
+      console.log('what subject do you teach ' + name + '?' );
+    };
+  }else {
+    return function (name) {
+      console.log('Hello ' + name + ', what do you do?');
+    };
+  }
+}
+
+//since we are returning and anonymous function we need to store its value on a variable so
+//we can pass in the param of the anonymous func.
+var teacherQuestion = interviewQuestions('teacher');
+var designerQuestion = interviewQuestions('designer');
+
+//we call the previously assigned anonymous function and pass in the param to the func so it
+//can run the code in its exicution context
+teacherQuestion('John');
+designerQuestion('John');
+//IIFE
+//we dont always have to assign the returned anonymous func to a var though, since the line
+//is evaluated from left to right, we can call the returned function imediately and pass in the correct arguments (chaining)
+interviewQuestions('teacher')('ryan');
