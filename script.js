@@ -49,8 +49,7 @@
 // //we can solve this problem using protoypes
 
 
-//Constructor Prototypes (inheritance)
-
+/*
 var Person = function (name, yearOfBirth, job){
   this.name = name;
   this.yearOfBirth = yearOfBirth;
@@ -83,8 +82,43 @@ console.log(mark.lastName);
 
 
 
-
 // var mike = [];
 // mike.age = 92;
 // mike.hair = 'brown';
 // console.log(mike.age, mike.hair, mike, mike[0]);
+// for (var i = 0; i < mike.length; i++) {
+//   console.log(mike[i]);
+// }
+
+*/
+
+
+//Object.create
+
+//first we have to declare the object literal we want to use as the prototype for our new obj.
+//then we can add properties to the obj literal. They can be methods, or normal prop value pairs.
+
+var personProto = {
+  calculateAge: function() {
+    console.log(2017 - this.yearOfBirth);
+  }
+};
+// we call Object.create() pass in the personProto obj so that it becomes the prototype for
+//for the new john obj.
+var john = Object.create(personProto);
+// you can then add properties to the newly created object using dot notation.
+john.name = "John";
+john.yearOfBirth = 1990;
+john.job = "teacher";
+
+//you can call Object.create, and pass into the first param the obj you want to be the
+//prototype, then you can pass an object into the second param with key value pairs to be the
+// keys and values of the object itself. (not the proto) the syntax is a bit different with
+// the value being another object w/ a value property and then its value being the value of
+// the parent obj's properity but this is how it is done.
+
+var jane = Object.create(personProto, {
+  name: {value: "Jane"},
+  yearOfBirth: {value: 1969},
+  job: {value: "designer"}
+});
