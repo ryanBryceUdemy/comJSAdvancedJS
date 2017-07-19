@@ -98,27 +98,78 @@ console.log(mark.lastName);
 //first we have to declare the object literal we want to use as the prototype for our new obj.
 //then we can add properties to the obj literal. They can be methods, or normal prop value pairs.
 
-var personProto = {
-  calculateAge: function() {
-    console.log(2017 - this.yearOfBirth);
-  }
+// var personProto = {
+//   calculateAge: function() {
+//     console.log(2017 - this.yearOfBirth);
+//   }
+// };
+// // we call Object.create() pass in the personProto obj so that it becomes the prototype for
+// //for the new john obj.
+// var john = Object.create(personProto);
+// // you can then add properties to the newly created object using dot notation.
+// john.name = "John";
+// john.yearOfBirth = 1990;
+// john.job = "teacher";
+//
+// //you can call Object.create, and pass into the first param the obj you want to be the
+// //prototype, then you can pass an object into the second param with key value pairs to be the
+// // keys and values of the object itself. (not the proto) the syntax is a bit different with
+// // the value being another object w/ a value property and then its value being the value of
+// // the parent obj's properity but this is how it is done.
+//
+// var jane = Object.create(personProto, {
+//   name: {value: "Jane"},
+//   yearOfBirth: {value: 1969},
+//   job: {value: "designer"}
+// });
+
+
+//Primitives vs objects
+
+//primitives
+
+//primitives assigned to variables hold onto and store the value of the primitive. they do not
+//hold a reference.
+var b, a;
+a = 23;
+b = a;
+a = 64;
+console.log(a);
+console.log(b);
+
+//Objects
+
+//objects assigned to variables are stored as references and do not contain the object
+//themself. so if you try to assign the obj to another vraiable, it does not make a copy
+//like a primitive would. but instead holds a reference that points to the exact same object in memory that the pervious var was pointing at as well.
+var obj1, obj2;
+obj1 = {
+  name: 'John',
+  age: 26
 };
-// we call Object.create() pass in the personProto obj so that it becomes the prototype for
-//for the new john obj.
-var john = Object.create(personProto);
-// you can then add properties to the newly created object using dot notation.
-john.name = "John";
-john.yearOfBirth = 1990;
-john.job = "teacher";
+obj2 = obj1;
+obj1.age = 30;
+console.log(obj1.age);
+console.log(obj2.age);
 
-//you can call Object.create, and pass into the first param the obj you want to be the
-//prototype, then you can pass an object into the second param with key value pairs to be the
-// keys and values of the object itself. (not the proto) the syntax is a bit different with
-// the value being another object w/ a value property and then its value being the value of
-// the parent obj's properity but this is how it is done.
+//Functions
 
-var jane = Object.create(personProto, {
-  name: {value: "Jane"},
-  yearOfBirth: {value: 1969},
-  job: {value: "designer"}
-});
+var age, obj;
+age = 27;
+obj = {
+  name: 'Jonas',
+  city: 'Lisbon'
+};
+
+console.info(change);
+function change(a, b) {
+  a = 30;
+  b.city = 'San Francisco';
+}
+
+change(age, obj);
+//as we have seen before, the age var does not change beacuse it is a primitive.
+//but the obj.city does change. this is because we are not actually passing in the
+//object itself, but we are passing in a reference to the obj. so the obj reference gets updated and reflects the change.
+console.log(age);
+console.log(obj);
