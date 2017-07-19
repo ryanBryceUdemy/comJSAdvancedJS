@@ -123,7 +123,7 @@ console.log(mark.lastName);
 //   job: {value: "designer"}
 // });
 
-
+/*
 //Primitives vs objects
 
 //primitives
@@ -173,3 +173,46 @@ change(age, obj);
 //object itself, but we are passing in a reference to the obj. so the obj reference gets updated and reflects the change.
 console.log(age);
 console.log(obj);
+*/
+
+
+////////
+//passing functions as arguments (Callbacks)
+
+//first we make an array of years
+var years = [ 1992, 1984, 1966, 1912, 2000];
+//We then make a function that accepts an array and a function that will be called later in
+//the function. (AKA a callback) We loop through the array and push the result/return value
+//of invoking the callback funtion with the array index as the callback's passed in param.
+function arrayCalc( arr, fn ) {
+  var arrRes = [];
+  for (var i = 0; i < arr.length; i++) {
+    arrRes.push( fn(arr[i]) );
+  }
+  return arrRes;
+}
+//here is the function that will be used as our callback. it's param will be the index of the looped over array above.
+function calculateAge (el) {
+  return 2017 - el;
+}
+//another callback
+function isFullAge(el) {
+  return el >= 18;
+}
+//This will calc the max heart rate for your age.
+function maxHeartRate(el) {
+  if (el >= 18 && el <= 81) {
+    return Math.round(206.9 - (0.67 * el));
+  }else {
+    return -1;
+  }
+
+}
+// we call nameCalc and pass it two params, our years array and the callcualte age function.
+// we do not invoke the calculateAge function when passing it into the function as our namecalc function will be the one to call the calulateAge function. we are returning an array of ages so we need a place to store the value, hence the ages variables.
+var ages = arrayCalc( years, calculateAge );
+console.log(ages);
+var fullages = arrayCalc(ages, isFullAge);
+console.log(fullages);
+var rates = arrayCalc( ages, maxHeartRate);
+console.log(rates);
