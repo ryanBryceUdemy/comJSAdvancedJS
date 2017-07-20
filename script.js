@@ -287,18 +287,20 @@ game();
 })(5);
 */
 
+
+/*
 ///////////////////////////////
 // Closures
 //so closures work this way. you have a function that returns a inner function. Scope chain
 //rules still apply. so when the outer function is called it gets put on top of the execution
 //stack. when a function is called it gets its own exicution contex, this means it gets its
-//own variable object, scope, and this value stored in the execution context, because of
+//own variable object, scope, and this value stored, because of
 //lexical scopeing the inner function gets access to the outer functions variable object. so
 //here's where things get magical. :) when the outer function is executed and popped off the
 //call stack the variable object is still hanging around in memory. and because scope
 //chaining, when the inner function gets called it 'closes' over the outer functions variable
 //object aka(closure) and the inner function has reference to the outer functions scope chain
-//still. So it still has access to the outer funtions vars, functions, and arguments. since //we still have access to the outer functions context we can then update and change the
+//still. So it still has access to the outer funtions vars, functions, and arguments. since //we still have access to the outer functions variable object we can then update and change //the
 //values in the outer function. this means we can call the function retirement, and assign
 //the returned anonymous function to a new varriable. We could assign the returned func as
 //many vars as we want. this allows us to make our code more modular.
@@ -309,7 +311,7 @@ function retirement (retirementAge){
     console.log((retirementAge - age) + a);
   };
 }
-//modular closure approch
+//modular closure approch allowing me to have retirement for differnet countries.
 var retirementUS = retirement(66);
 var retirementGermany = retirement(65);
 var retirementIceland = retirement(67);
@@ -319,6 +321,7 @@ retirementIceland(1990);
 // IIFE closure
 retirement(66)(1990);
 
+//rewrote past function using the power of closures.
 function interviewQuestions(job) {
   return function (name) {
     if (job === 'designer') {
@@ -331,4 +334,83 @@ function interviewQuestions(job) {
   };
 }
 
-interviewQuestions("teacher")("ryan")
+interviewQuestions("teacher")("ryan");
+
+*/
+
+/////////////////////////////////////
+//lecture Bind, Call and Apply
+
+// we decare an object literal and reference it by the john var. it has a method on it that
+//uses the this keyword to reference the john object.
+var john = {
+  name: 'john',
+  age: 26,
+  job: 'teacher',
+  presentation: function (style, timeOfDay) {
+    if (style === 'formal') {
+      console.log(`Good ${timeOfDay}, ladies and gentlemen i'm ${this.name}, i'm a ${this.job} and i'm ${this.age} years old `);
+    } else if (style === 'friendly') {
+      console.log(`hey what's up? i'm ${this.name} i'm a ${this.job} and i'm ${this.age} years old. have a nice ${timeOfDay}`);
+    }
+  }
+};
+
+// we declare another object. this one is named emily. we are going to use her obj to borrow
+//the method on the john obj. This is done by using bind, call and apply methods.
+var emily = {
+  name: 'emily',
+  age: 29,
+  job: 'designer'
+};
+//invoking the john presentation method
+john.presentation("formal", "morning");
+
+//we use the call method this way. the call method is going to actually invoke the method for
+//us. the first paramiter we pass in is going to take the value of the this keyword. so in
+//this casr it is going to be the emily obj. then any argument after that will be the methods
+//paramiters in the order they were declared in the method.
+john.presentation.call(emily, "friendly", "afternoon");
+//we use the apply method this way. the apply method is going to actually invoke the method
+//for us. the first paramiter we pass in is going to take the value of the this keyword. so
+//in this case it is going to be the emily obj. then any array after that will be the methods
+//paramiters. the param's will be index according to the array an in the order they were
+//declared in the method.
+john.presentation.apply(emily,["friendly", "afternoon"]);
+//we use the bind method this way. the bind method is not going to actually invoke the method
+//for us, it will assign the method with the object you want to be the value of the this
+//keyword and then it will return a function for you to use later. with that being said we
+//can use what is called currying which is the use of a function (that accept one or more
+//arguments) that returns a new function with some of the arguments already set.
+var johnFriendly = john.presentation.bind(john, 'friendly');
+
+johnFriendly('morning');
+
+var emilyFormal = john.presentation.bind(emily, 'formal');
+
+emilyFormal('afternoon');
+
+var years = [ 1992, 2004, 1966, 1912, 2000];
+function arrayCalc( arr, fn ) {
+  var arrRes = [];
+  for (var i = 0; i < arr.length; i++) {
+    arrRes.push( fn(arr[i]) );
+  }
+  return arrRes;
+}
+function calculateAge (el) {
+  return 2017 - el;
+}
+function isFullAge(limit, el) {
+  return el >= limit;
+}
+
+var ages = arrayCalc(years, calculateAge);
+//below i used the bind method to set a predefined argument for the isFullAge method in this
+//case the age limit. we could then call the fullJapan function and pass in the second
+//argument which would take the place of the el param. this allows us to pass in the
+//isFullAge function as a callback. and allows us to not throw an error in the arrayCalc
+//function.
+var fullJapan = arrayCalc(ages, isFullAge.bind(this, 20));
+console.log(ages);
+console.log(fullJapan);
