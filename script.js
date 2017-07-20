@@ -220,7 +220,7 @@ console.log(rates);
 
 /*
 //////////////////////
-//returning functions returning functions
+//functions returning functions
 
 //we make a function that checks for the tyoe of job being passed into it from param,
 //we then return an anonymous function with the correct response
@@ -255,6 +255,7 @@ designerQuestion('John');
 interviewQuestions('teacher')('ryan');
 */
 
+/*
 ///////////////////////
 //lecture on IIFE
 
@@ -277,10 +278,57 @@ game();
 //   console.log(score >= 5);
 // }()
 
-//to pass arguments into a IIFE you invoke the IIFE and then pass an agurment into the IIFE 
+//to pass arguments into a IIFE you invoke the IIFE and then pass an agurment into the IIFE
 //this will work just like passing arguments into a normal func expression or declaration
 //you just pass your agurments into the function call.
 (function (goodluck) {
   var score = Math.random() * 10;
   console.log(score >= 5 - goodluck);
 })(5);
+*/
+
+///////////////////////////////
+// Closures
+//so closures work this way. you have a function that returns a inner function. Scope chain
+//rules still apply. so when the outer function is called it gets put on top of the execution
+//stack. when a function is called it gets its own exicution contex, this means it gets its
+//own variable object, scope, and this value stored in the execution context, because of
+//lexical scopeing the inner function gets access to the outer functions variable object. so
+//here's where things get magical. :) when the outer function is executed and popped off the
+//call stack the variable object is still hanging around in memory. and because scope
+//chaining, when the inner function gets called it 'closes' over the outer functions variable
+//object aka(closure) and the inner function has reference to the outer functions scope chain
+//still. So it still has access to the outer funtions vars, functions, and arguments. since //we still have access to the outer functions context we can then update and change the
+//values in the outer function. this means we can call the function retirement, and assign
+//the returned anonymous function to a new varriable. We could assign the returned func as
+//many vars as we want. this allows us to make our code more modular.
+function retirement (retirementAge){
+  var a = ' years left until retirement.';
+  return function (yearOfBirth) {
+    var age = 2016 - yearOfBirth;
+    console.log((retirementAge - age) + a);
+  };
+}
+//modular closure approch
+var retirementUS = retirement(66);
+var retirementGermany = retirement(65);
+var retirementIceland = retirement(67);
+retirementUS(1990);
+retirementGermany(1990);
+retirementIceland(1990);
+// IIFE closure
+retirement(66)(1990);
+
+function interviewQuestions(job) {
+  return function (name) {
+    if (job === 'designer') {
+        console.log(name + ' can you please explain what UX design is? ');
+    }else if (job === 'teacher') {
+        console.log('what subject do you teach ' + name + '?' );
+    }else {
+        console.log('Hello ' + name + ', what do you do?');
+    }
+  };
+}
+
+interviewQuestions("teacher")("ryan")
