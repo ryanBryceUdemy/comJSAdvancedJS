@@ -218,6 +218,7 @@ var rates = arrayCalc( ages, maxHeartRate);
 console.log(rates);
 */
 
+/*
 //////////////////////
 //returning functions returning functions
 
@@ -252,3 +253,34 @@ designerQuestion('John');
 //we dont always have to assign the returned anonymous func to a var though, since the line
 //is evaluated from left to right, we can call the returned function imediately and pass in the correct arguments (chaining)
 interviewQuestions('teacher')('ryan');
+*/
+
+///////////////////////
+//lecture on IIFE
+
+//the idea here with the code below is to make a private variable not seen from the outside,
+//one could simply do the below, but there is another/better way to do this.
+function game() {
+  var score = Math.random() * 10;
+  console.log(score >= 5);
+}
+game();
+// to make an IIFE we need to wrap the function in parenthasese, this will trick the parser into thinking this is a function expression and not a declaration. because in JS what is inside a parenthasese can not be a statement. so JS will know to treat this as an expression not a declaration.
+(function () {
+  var score = Math.random() * 10;
+  console.log(score >= 5);
+})();
+
+//this will not work, because the parser will see this as a function declaration and since it doesnt have a name for the declaration it will trip out and through an error.
+// function() {
+//   var score = Math.random() * 10;
+//   console.log(score >= 5);
+// }()
+
+//to pass arguments into a IIFE you invoke the IIFE and then pass an agurment into the IIFE 
+//this will work just like passing arguments into a normal func expression or declaration
+//you just pass your agurments into the function call.
+(function (goodluck) {
+  var score = Math.random() * 10;
+  console.log(score >= 5 - goodluck);
+})(5);
